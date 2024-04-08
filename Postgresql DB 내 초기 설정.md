@@ -6,17 +6,17 @@ bash$ psql
 ```
 사용자 계정을 postgresql의 마스터인 postgres로 변경 후 접속한다.
 
-db 사용자 생성
+DB 사용자 생성
 ```postgresql
 CREATE USER [username] WITH PASSWORD '[password]';
 ```
 
-db 생성
+DB 생성
 ```postgresql
 CREATE DATABASE [dbname];
 ```
 
-db 소유 할당
+DB 소유 할당
 ```postgresql
 ALTER DATABASE [dbname] OWNER TO [username];
 ```
