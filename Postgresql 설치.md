@@ -37,6 +37,18 @@ TYPE   DATABASE         USER            ADDRESS                 METHOD
 host    all             all             0.0.0.0/0               md5
 ```
 이후 해당 라인의 METHOD를 md5로 수정 후 원하는 ip 주소로 제한한다.
+
+TYPE local의 경우 md5로 METHOD를 바꾸면 로그인 시, 비밀번호를 요구한다.
+따라서 local의 경우 md5로 바꾸기 전, postgres 사용자에 대한 비밀번호를 psql로 접속 후 설정해주자.
+```bash
+sudo su -postgres
+qsql
+```
+
+```postgresql
+alter user postgres with password '[password]';
+```
+
 ## Postgresql-devel 설치
 
 기본 postgresql-server 에는 ecpg가 없다. postgresql15-devel 설치를 해주어야 한다.
