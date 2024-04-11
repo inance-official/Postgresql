@@ -1,45 +1,68 @@
+# PostgreSQL Install
+
+- root에서 실행
+
+## Install the repository RPM
 ```bash
-# Install the repository RPM:
-sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-
-# Disable the built-in PostgreSQL module(모듈 비활성화):
-sudo dnf -qy module disable postgresql
-
-# PostgreSQL 설치:
-sudo dnf install -y postgresql15-server
-
-# 초기화 및 서비스 자동 실행 설정:
-sudo /usr/pgsql-15/bin/postgresql-15-setup initdb
-sudo systemctl enable postgresql-15
-sudo systemctl start postgresql-15
+dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 ```
 
-외부 접속을 위한 초기 설정
+## Disable the built-in PostgreSQL module(모듈 비활성화)
 ```bash
---설정파일 오픈
-sudo vi /var/lib/pgsql/15/data/postgresql.conf
+dnf -qy module disable postgresql
 ```
 
-설정 파일에서 listen_addresses를 listen_addresses = '\*' 로 수정해 준다
+## PostgreSQL 설치
 ```bash
+dnf install -y postgresql15-server
+```
+
+## 초기화 및 서비스 자동 실행 설정:
+
+```bash
+/usr/pgsql-15/bin/postgresql-15-setup initdb
+```
+
+ ```bash
+systemctl enable postgresql-15
+```
+
+```bash
+systemctl start postgresql-15
+```
+
+# 외부 접속을 위한 초기 설정
+
+-  설정파일 오픈
+```bash
+vi /var/lib/pgsql/15/data/postgresql.conf
+```
+
+- 설정 파일에서 listen_addresses를 listen_addresses = '\*' 로 수정해 준다
+```bash
+
 ...
 #listen_addresses = '*'
 ...
+
 ```
 
-특정 ip 접속 허용
+## 특정 ip 접속 허용
+
+- 설정파일 오픈
 ```bash
---설정파일 오픈
-sudo vi /var/lib/pgsql/15/data/pg_hba.conf
+vi /var/lib/pgsql/15/data/pg_hba.conf
 ```
+
 ```plaintext
 TYPE   DATABASE         USER            ADDRESS                 METHOD
 host    all             all             0.0.0.0/0               md5
 ```
-이후 해당 라인의 METHOD를 md5로 수정 후 원하는 ip 주소로 제한한다.
 
-TYPE local의 경우 md5로 METHOD를 바꾸면 로그인 시, 비밀번호를 요구한다.
-따라서 local의 경우 md5로 바꾸기 전, postgres 사용자에 대한 비밀번호를 psql로 접속 후 설정해주자.
+- 이후 해당 라인의 METHOD를 md5로 수정 후 원하는 ip 주소로 제한
+
+- TYPE local의 경우 md5로 METHOD를 바꾸면 로그인 시, 비밀번호를 요구한다.
+  따라서 local의 경우 md5로 바꾸기 전, postgres 사용자에 대한 비밀번호를 psql로 접속 후 설정해주자.
 ```bash
 sudo su -postgres
 qsql
@@ -67,6 +90,7 @@ dnf install postgresql15-devel
 (설치 할 수 없는 꾸러미를 건너 뛰려면 '--skip-broken'을 (를) 추가하십시오 또는 '--nobest'는 최적 후보의 꾸러미만 사용합니다)
 ```
 
+# Rocky Linux 9 perl-ipc-run 패키지
 
 현재 사용하는 OS 버전으로 인해 perl-ipc 종속성을 해결해주지 못해서 발생하는 문제이다.
 perl-ipc-run 패키지를 설치해주면 된다.
