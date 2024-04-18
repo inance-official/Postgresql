@@ -1,9 +1,17 @@
 
 DB 접속
 ```bash
-~# su postgres
-bash$ psql
+su - postgres
 ```
+```bash
+psql
+```
+or 
+
+```bash
+psql -U postgres
+```
+
 사용자 계정을 postgresql의 마스터인 postgres로 변경 후 접속한다.
 
 DB 사용자 생성
